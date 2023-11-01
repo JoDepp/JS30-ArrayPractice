@@ -88,6 +88,7 @@ const inventorFirstLastName = inventors.map(
 );
 console.log(inventorFirstLastName);
 
+
 // Array.prototype.sort()
 // 3. Sort the inventors by birthdate, oldest to youngest
 const ageOrdered = inventors.sort(function (a, b) {
@@ -99,16 +100,48 @@ const ageOrdered = inventors.sort(function (a, b) {
 });
 
 console.table(ageOrdered);
-// Array.prototype.reduce()
+
+// Or you can make it shorter by using a ternerary statement
+const ordered = inventors.sort((a, b) => a.year > b.year ? 1 : -1);
+
+
+// Array.prototype.reduce() allows you to build something on everyone, reduce give you a total of what was output previously
 // 4. How many years did all the inventors live all together?
+const totalYears = inventors.reduce((total, inventor) => {
+  return total + (inventor.passed - inventor.year); //return number yrs each inventor lived, the zero allows us to add up each inventor total years lived
+}, 0);
+console.log(totalYears);
+
 
 // 5. Sort the inventors by years lived
+const oldest = inventors.sort(function(a, b) {
+  const lastGuy = a.passed - a.year; //gives us how long they lived 
+  const nextGuy = b.passed - b.year;
+  return lastGuy > nextGuy ? -1 : 1;
+});
+console.table(oldest);  //total years lived is 861
+
 
 // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
-// https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+// https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris    open link, then get the DOM elements out of the page by finding the element that has this list
+//const category = document.querySelector('.mw-category'); //looking for links <a> inside of that
+//const links = Array.from(category.querySelector('a')); //look within the category above to find links (a = is going to show us all the anchor tags), make it into an array
+//convert the link of links<a> to a list of names, then filter list of names for one that contain de.
+//const de = links
+//         .map(link => link.textContent)
+//       .filter(streetName => streetName.includes('de'));
+//had to comment out to run the code below
+
 
 // 7. sort Exercise
-// Sort the people alphabetically by last name
+// Sort the people alphabetically by last name and first name, we'll use split
+const alpha = people.sort((lastOne, nextOne) => {
+  const [aLast, aFirst] = lastOne.split(', ');   //split it on a comma and a space (', ');
+  const [bLast, bFirst] = nextOne.split(', ');
+return aLast > bLast ? 1 : -1;
+});
+console.log(alpha);
+
 
 // 8. Reduce Exercise
 // Sum up the instances of each of these
@@ -128,3 +161,13 @@ const data = [
   "car",
   "truck"
 ];
+
+const transportation = data.reduce(function(obj, item) {
+  if(!obj[item]) { 
+  obj[item] = 0;
+  }
+  obj[item]++;
+  return obj;
+}, {});   //start with a blank object and loop over each item, then the first time we loop over our problem we see if there's a zero to work with if not we make an entry for it
+console.log(transportation);
+
